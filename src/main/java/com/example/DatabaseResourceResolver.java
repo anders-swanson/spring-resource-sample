@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseResourceResolver implements ResourceLoaderAware, ProtocolResolver {
-    public static final String PROTOCOL_PREFIX = "oracledatabase://";
 
     private final JdbcTemplate jdbcTemplate;
     private final String table;
@@ -30,8 +29,8 @@ public class DatabaseResourceResolver implements ResourceLoaderAware, ProtocolRe
 
     @Override
     public Resource resolve(String location, ResourceLoader resourceLoader) {
-        if (location.startsWith(PROTOCOL_PREFIX)) {
-            String fileName = location.substring(PROTOCOL_PREFIX.length());
+        if (location.startsWith(DatabaseLocation.PROTOCOL_PREFIX)) {
+            String fileName = location.substring(DatabaseLocation.PROTOCOL_PREFIX.length());
             DatabaseLocation databaseLocation = new DatabaseLocation(table, blobColumn, fileNameColumn, fileName);
             return new DatabaseResource(jdbcTemplate, databaseLocation);
         }
